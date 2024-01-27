@@ -20,7 +20,7 @@ const HomeLayout = ({
 
     return (
         <Layout>
-            <Header
+            {/* <Header
                 style={{
                     position: 'sticky',
                     top: 0,
@@ -38,7 +38,7 @@ const HomeLayout = ({
                     items={items}
                     style={{ flex: 1, minWidth: 0 }}
                 />
-            </Header>
+            </Header> */}
             <Content style={{ padding: '10px 48px' }}>
                 {/* <Breadcrumb style={{ margin: '16px 0' }}>
                     <Breadcrumb.Item>Home</Breadcrumb.Item>
