@@ -64,8 +64,8 @@ const BrochuneInput = () => {
 
                 <Form.Item
                     label="Brochure Image"
-                    name="password"
-                    rules={[{ required: true, message: 'Please input your password!' }]}
+                    name="image"
+                    rules={[{ required: true, message: 'Please select image' }]}
                 >
                     <Upload.Dragger {...uploadProps}
                         accept="image/*"
