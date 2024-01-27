@@ -1,19 +1,46 @@
 "use client"
-import { Button, Flex, Form, Image, Input, Tabs, Upload } from "antd";
+import { Button, Flex, Form, Image, Input, Spin, Tabs, Upload } from "antd";
 import { InboxOutlined } from '@ant-design/icons';
-
 import type { TabsProps, UploadProps } from 'antd';
 import React from "react";
 
 const BrochuneInput = () => {
 
     const [selectedFile, setSelectedFile] = React.useState(null as any)
+    const [selectedTab, setSelectedTab] = React.useState("1")
+    const [loading, setLoading] = React.useState(false)
+    const [state, seState] = React.useState({
+        content: "",
+        role: ""
+    })
 
     const onChange = (key: string) => {
         console.log(key);
     };
-    const onFinish = (values: any) => {
+
+    const onFinish = async (values: any) => {
         console.log('Success:', values);
+        setLoading(true)
+        try {
+            const apiRes = await fetch("/api/openai", {
+                method: "post",
+                body: JSON.stringify({ messages: values.title })
+            })
+            const apiJson = await apiRes.json()
+            console.log("apiRes", apiRes);
+            seState(apiJson)
+            setSelectedTab("2")
+        } catch (error) {
+            console.log("error", error);
+
+
+        } finally {
+
+            setLoading(false)
+        }
+        // const generated_text = apiRes.choices[0].text
+        // console.log("generated_text", generated_text);
+
     };
 
     const uploadProps: UploadProps = {
@@ -83,9 +110,9 @@ const BrochuneInput = () => {
                 </Form.Item>
                 <Form.Item>
 
-
                     {selectedFile &&
                         <Image
+                            width={500}
                             src={URL.createObjectURL(selectedFile)}
                         />}
                 </Form.Item>
@@ -102,17 +129,19 @@ const BrochuneInput = () => {
             key: '2',
             label: <Flex align="center" gap={"small"}>  <Button disabled type="primary" shape="circle">2</Button>Generated Brochure
             </Flex>,
-            children: 'Content of Tab Pane 2',
+            children: state.content,
         },
 
     ];
 
 
-    return <Flex>
-        <h1>hamim</h1>
-        <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
-
-    </Flex>;
+    return <Spin spinning={loading}>
+        <Flex>
+            <Tabs
+                activeKey={selectedTab}
+                items={items} />
+        </Flex>;
+    </Spin>
 }
 
 export default BrochuneInput
